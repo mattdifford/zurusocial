@@ -1,0 +1,51 @@
+<form id="instagram_lookup">
+    <input type="string" id="instagram_lookup_username">
+    <button type="button" id="instagram_lookup_button">Find IG account</button>
+</form>
+<div id="instagram_hook" class="profile">
+    <div class="profile__image"></div>
+    <h2 class="profile__name">Name: </h2>
+    <h4 class="profile__user">Username: </h4>
+    <p class="profile__followers">Followers: </p>
+    <p class="profile__following">Following: </p>
+</div>
+
+<script>
+    $('#instagram_lookup_button').on("click", function (e) {
+        e.preventDefault;
+        $.ajax({
+            async: true,
+            type: 'GET',
+            url: 'https://www.instagram.com/' + $('#instagram_lookup_username').val() + '/?__a=1',
+            success: function (data) {
+                var user = data.graphql.user;
+                var user_obj = {};
+                user_obj.username = user.username;
+                user_obj.followers = user.edge_followed_by.count;
+                user_obj.following = user.edge_follow.count;
+                user_obj.profile_pic = user.profile_pic_url_hd;
+                user_obj.fullname = user.full_name;
+                user_obj.verified = user.verified;
+                setActiveIGAccount(user_obj);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        })
+    });
+    function setActiveIGAccount(account) {
+        var hook = $('#instagram_hook');
+        var img = document.createElement("IMG")
+        img.src = account.profile_pic;
+        img.alt = account.username;
+        hook.find('.profile__image').html(img)
+        hook.find('.profile__name').append(account.fullname)
+        hook.find('.profile__user').append(account.username)
+        hook.find('.profile__followers').append(account.followers)
+        hook.find('.profile__following').append(account.following)
+        if (account.verified) {
+            hook.addClass('profile--verified');
+        }
+        hook.addClass('profile--active');
+    }
+</script>

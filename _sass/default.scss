@@ -1,0 +1,24 @@
+@import "vars.scss";
+html {
+  font-family: "Roboto", sans-serif;
+}
+form {
+  padding: 20px;
+}
+.profile {
+  display: none;
+  padding: 20px;
+  border: 1px solid grey;
+  background: lightgrey;
+  &--active {
+    display: inline-block;
+    text-align: center;
+  }
+  &__image {
+    img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+    }
+  }
+}
