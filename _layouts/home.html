@@ -4,12 +4,50 @@
 
 <body>
     {%- include header.html -%}
-
-    <div class="stickee-comparison-widget" data-sector="broadband" data-partner="1ee4c99e-aa11-43e1-aef5-de0c507d125a"
-        data-type="full"></div>
-
+    <form class="form">
+        <fieldset>
+            <input name="first_name" type="text" />
+            <button class="submit_button">Submit</button>
+        </fieldset>
+    </form>
     {%- include foot.html -%}
 
 </body>
+<script>
+    $.fn.serializeObject = function () {
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function () {
+            if (o[this.name]) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+    $('.submit_button').on("click", function (e) {
+        e.preventDefault();
+        var formData = $('.form').serializeObject();
+        formData.ckm_campaign_id = 5;
+        formData.ckm_key = "ku5iHOp9NJc";
+        $.ajax({
+            async: true,
+            url: 'https://zglsecure.com/d.ashx',
+            data: formData,
+            type: 'POST',
+            dataType: "xml",
+            success: function (data) {
+                debugger;
+            },
+            error: function (e) {
+                debugger;
+            }
+        });
+    });
+</script>
 
 </html>
